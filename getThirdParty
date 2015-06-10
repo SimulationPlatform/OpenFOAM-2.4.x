@@ -1,0 +1,67 @@
+#!/bin/sh
+
+# Name:
+#     getThirdparty
+#
+# Description:
+#     This script downloads a copy of OprnFOAM's ThirdParty software,
+#     uncompresses it and renames it appropriately. If a copy already exists it
+#     is backed up and can be removed manually, if desired.
+#
+# Usage:
+#     ./getThirdParty
+#
+# Note:
+#     None.
+#
+# Date:
+#     10.06.2015
+
+
+# Functions
+
+# None
+
+
+# Variables
+
+# None
+
+
+# Main program
+
+# Check whether there is already a ThirdParty-2.4 directory. If so, back it up.
+# In any case download a new copy.
+# ThirdParty-2.4.x.
+if [ -d ../ThirdParty-2.4.x ]; then
+    TPX="YES"
+    echo "Backing up existing ThirdParty-2.4.x to ThirdParty-2.4.x.bak"
+    echo "Please remove manually if not needed anymore"
+    mv ../ThirdParty-2.4.x ../ThirdParty-2.4.x.bak
+elif [ -d ../ThirdParty-2.4.0 ]; then
+    TP0="YES"
+    echo "Removing existing ThirdParty-2.4.0"
+    rm -r ../ThirdParty-2.4.0
+elif [ -f ../ThirdParty-2.4.0.tgz ]; then
+    TPXT="YES"
+    echo "Removing existing ThirdParty-2.4.0.tgz and downloading new copy"
+    rm -r ../ThirdParty-2.4.0.tgz
+    wget \
+        --directory-prefix=../ \
+        http://downloads.sourceforge.net/foam/ThirdParty-2.4.0.tgz
+fi
+
+echo "Uncompressing ThirdParty-2.4.0.tgz and rename to ThirdParty-2.4.x"
+tar -xzf ../ThirdParty-2.4.0.tgz -C ../
+mv ../ThirdParty-2.4.0 ../ThirdParty-2.4.x
+
+# Without the fix below the parallel library scotch does not compile with
+# OpenFOAM's ThirdParty.
+echo "Fixing a funny 'feature' in the Makefile of scotch"
+sed -i \
+    -e '/d\[agm\]/d' \
+    -e 's/agm/dagm/' \
+    ../ThirdParty-2.4.x/scotch_6.0.3/src/Makefile
+
+
+# ----------------------------------------------------------------- end-of-file
