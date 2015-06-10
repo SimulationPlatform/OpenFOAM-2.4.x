@@ -42,7 +42,8 @@ export WM_PROJECT_VERSION=2.4.x
 #
 # Location of the OpenFOAM installation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-foamInstall=$HOME/$WM_PROJECT
+# foamInstall=$HOME/$WM_PROJECT
+foamInstall=$OSCCAR_DIR
 # foamInstall=~$WM_PROJECT
 # foamInstall=/opt/$WM_PROJECT
 # foamInstall=/usr/local/$WM_PROJECT
@@ -79,9 +80,9 @@ export WM_PRECISION_OPTION=DP
 export WM_COMPILE_OPTION=Opt
 
 #- MPI implementation:
-#    WM_MPLIB = SYSTEMOPENMPI | OPENMPI | SYSTEMMPI | MPICH | MPICH-GM | HPMPI
-#               | MPI | QSMPI | SGIMPI
-export WM_MPLIB=SYSTEMOPENMPI
+#    WM_MPLIB = SYSTEMOPENMPI | OPENMPI | MPICH | MPICH-GM | HPMPI
+#               | GAMMA | MPI | QSMPI | SGIMPI
+export WM_MPLIB=OPENMPI
 
 #- Operating System:
 #    WM_OSTYPE = POSIX | ???
@@ -129,8 +130,8 @@ fi
 
 # Location of user files
 # ~~~~~~~~~~~~~~~~~~~~~~
-export WM_PROJECT_USER_DIR=$HOME/$WM_PROJECT/$USER-$WM_PROJECT_VERSION
-
+#export WM_PROJECT_USER_DIR=$HOME/$WM_PROJECT/$USER-$WM_PROJECT_VERSION
+export WM_PROJECT_USER_DIR=$OSCCAR_DIR/$USER-$WM_PROJECT_VERSION
 
 # Source files, possibly with some verbosity
 _foamSource()
